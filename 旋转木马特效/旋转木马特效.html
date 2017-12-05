@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="css/css.css"/>
+  <script type="text/javascript" src="js/animate.js"></script>
+</head>
+<body>
+<div class="wrap" id="wrap">
+  <div class="slide" id="slide">
+    <ul>
+      <li><a href="#"><img src="images/slidepic1.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic2.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic3.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic4.jpg" alt=""/></a></li>
+      <li><a href="#"><img src="images/slidepic5.jpg" alt=""/></a></li>
+    </ul>
+    <div class="arrow" id="arrow">
+      <a href="javascript:;" class="prev" id="arrLeft"></a>
+      <a href="javascript:;" class="next" id="arrRight"></a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script>
+//  1. 鼠标经过大盒子 箭头盒子 渐渐的出来 （opacity： 0  ~ 1）
+  var wrap=document.getElementById("wrap");
+  var arrow=document.getElementById("arrow");
+wrap.onmouseover=function(){
+//  arrow:要显示出来的盒子。其过程是一个动画函数
+  animate(arrow,{"opacity":1});
+  clearInterval(timer)          //当鼠标移到wrap上时，清除定时器
+}
+wrap.onmouseout=function(){
+  animate(arrow,{"opacity":0});
+  timer=setInterval(arrRight.onclick,2000);   //当鼠标移开wrap时，继续执行定时器
+}
+
+//以下是旋转木马配置单
+var config = [
+  {
+    "width": 400,
+    "top": 20,
+    "left": 50,
+    "opacity": 0.2,
+    "zIndex": 2
+  },//0
+  {
+    "width": 600,
+    "top": 70,
+    "left": 0,
+    "opacity": 0.8,
+    "zIndex": 3
+  },//1
+  {
+    "width": 800,
+    "top": 100,
+    "left": 200,
+    "opacity": 1,
+    "zIndex": 4
+  },//2
+  {
+    width: 600,
+    top: 70,
+    left: 600,
+    opacity: 0.8,
+    zIndex: 3
+  },//3
+  {
+    "width": 400,
+    "top": 20,
+    "left": 750,
+    "opacity": 0.2,
+    "zIndex": 2
+  }//4
+]
+  var slide=document.getElementById("slide");
+  var lis=slide.children[0].children;
+for(i=0;i<lis.length;i++){
+  animate(lis[i],config[i])
+}
+
+//点击右侧按钮进行循环播放
+  var arrRight=document.getElementById("arrRight");
+ /* var flag=true;                 //设置一个节流阀保证当前图片加载完毕后才能加载后一张图片*/
+arrRight.onclick=function(){
+  config.unshift(config.pop());     //  把 最后一个删除 放到数组的最前面
+  for(i=0;i<lis.length;i++){
+    animate(lis[i],config[i]);       //config 里面的属性通过 animate 函数赋值给li
+  }
+}
+
+//点击左侧按钮进行循环播放
+var arrLeft=document.getElementById("arrLeft");
+arrLeft.onclick=function(){
+  config.push(config.shift());      //  把 第一个删除 放到数组的最后面
+  for(i=0;i<lis.length;i++){
+    animate(lis[i],config[i]);       //config 里面的属性通过 animate 函数赋值给li
+  }
+}
+
+//  添加自动播放定时器
+var timer=null;
+timer=setInterval(arrRight.onclick,2000);
+
+//设置一个节流阀保证当前图片加载完毕后才能加载后一张图片。分别放在左右按钮那里。
+
+
+</script>
